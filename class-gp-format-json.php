@@ -61,7 +61,7 @@ class GP_Format_JSON extends GP_Format {
 
 		/* @var Translation_Entry $entry */
 		foreach ( $entries as $entry ) {
-			$key = $entry->context ? $entry->context . chr(4) . $entry->singular : $entry->singular;
+			$key = $entry->context ? $entry->context . chr( 4 ) . $entry->singular : $entry->singular;
 
 			$result['locale_data']['messages'][ $key ] = array_filter( $entry->translations, function ( $translation ) {
 				return null !== $translation;
@@ -79,6 +79,7 @@ class GP_Format_JSON extends GP_Format {
 		 *
 		 * @see https://bugs.php.net/bug.php?id=50867
 		 */
+
 		return str_replace( '__GP_EMPTY__', '', $result );
 	}
 
@@ -122,9 +123,9 @@ class GP_Format_JSON extends GP_Format {
 				'singular' => $key,
 			);
 
-			if ( false !== strpos( $key, chr(4) ) ) {
-				$args['context']  = explode( chr(4), $key )[0];
-				$args['singular'] = explode( chr(4), $key )[1];
+			if ( false !== strpos( $key, chr( 4 ) ) ) {
+				$args['context']  = explode( chr( 4 ), $key )[0];
+				$args['singular'] = explode( chr( 4 ), $key )[1];
 			}
 
 			if ( 2 === count( $value ) ) {
@@ -178,9 +179,9 @@ class GP_Format_JSON extends GP_Format {
 				'singular' => $key,
 			);
 
-			if ( false !== strpos( $key, chr(4) ) ) {
-				$args['context']  = explode( chr(4), $key )[0];
-				$args['singular'] = explode( chr(4), $key )[1];
+			if ( false !== strpos( $key, chr( 4 ) ) ) {
+				$args['context']  = explode( chr( 4 ), $key )[0];
+				$args['singular'] = explode( chr( 4 ), $key )[1];
 			}
 
 			$args['translations'] = $value;
