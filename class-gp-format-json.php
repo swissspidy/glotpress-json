@@ -93,13 +93,13 @@ class GP_Format_JSON extends GP_Format {
 	public function read_originals_from_file( $file_name ) {
 		$file = file_get_contents( $file_name );
 
-		if ( false === $file ) {
+		if ( ! $file ) {
 			return false;
 		}
 
 		$json = $this->json_decode( $file );
 
-		if ( null === $json ) {
+		if ( ! $json ) {
 			return false;
 		}
 
@@ -143,7 +143,7 @@ class GP_Format_JSON extends GP_Format {
 
 		$file = file_get_contents( $file_name );
 
-		if ( false === $file ) {
+		if ( ! $file ) {
 			return $entries;
 		}
 
