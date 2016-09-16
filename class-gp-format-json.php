@@ -42,7 +42,6 @@ class GP_Format_JSON extends GP_Format {
 	 *                                            exported for. not used in this format but part
 	 *                                            of the scaffold of the parent object.
 	 * @param GP_Translation     $entries         The entries to export.
-	 *
 	 * @return string
 	 */
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
@@ -89,7 +88,6 @@ class GP_Format_JSON extends GP_Format {
 	 * @since 0.1.0
 	 *
 	 * @param string $file_name The name of the uploaded JSON file.
-	 *
 	 * @return Translations|bool
 	 */
 	public function read_originals_from_file( $file_name ) {
@@ -145,7 +143,6 @@ class GP_Format_JSON extends GP_Format {
 	 *
 	 * @param string     $file_name The name of the uploaded properties file.
 	 * @param GP_Project $project   The project object to read the translations into.
-	 *
 	 * @return Translations
 	 */
 	public function read_translations_from_file( $file_name, $project = null ) {
@@ -157,16 +154,9 @@ class GP_Format_JSON extends GP_Format {
 			return $entries;
 		}
 
-		$json = json_decode( $file, true );
+		$json = $this->json_decode( $file );
 
-		if ( null === $json ) {
-			return $entries;
-		}
-
-		if ( ! isset( $json['domain'] ) ||
-		     ! isset( $json['locale_data'] ) ||
-		     ! isset( $json['locale_data'][ $json['domain'] ] )
-		) {
+		if ( ! $json ) {
 			return $entries;
 		}
 
@@ -190,5 +180,30 @@ class GP_Format_JSON extends GP_Format {
 		}
 
 		return $entries;
+	}
+
+	/**
+	 * Decodes a JSON string and checks for needed array keys.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string $json The JSON string being decoded.
+	 * @return array|false The encoded value or fals on failure.
+	 */
+	protected function json_decode( $json ) {
+		$json = json_decode( $json, true );
+
+		if ( null === $json ) {
+			return false;
+		}
+
+		if ( ! isset( $json['domain'] ) ||
+		     ! isset( $json['locale_data'] ) ||
+		     ! isset( $json['locale_data'][ $json['domain'] ] )
+		) {
+			return false;
+		}
+
+		return $json;
 	}
 }
