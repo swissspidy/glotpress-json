@@ -32,8 +32,8 @@ script:
   - source $DEV_LIB_PATH/travis.script.sh
 
 after_script:
+  - source $DEV_LIB_PATH/travis.after_script.sh
   - |
        if [[ "$WP_TRAVISCI" == "codecoverage" ]] ; then
          bash <(curl -s https://codecov.io/bash)
        fi
-  - source $DEV_LIB_PATH/travis.after_script.sh
