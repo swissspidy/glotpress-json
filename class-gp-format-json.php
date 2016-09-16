@@ -97,16 +97,9 @@ class GP_Format_JSON extends GP_Format {
 			return false;
 		}
 
-		$json = json_decode( $file, true );
+		$json = $this->json_decode( $file );
 
 		if ( null === $json ) {
-			return false;
-		}
-
-		if ( ! isset( $json['domain'] ) ||
-		     ! isset( $json['locale_data'] ) ||
-		     ! isset( $json['locale_data'][ $json['domain'] ] )
-		) {
 			return false;
 		}
 
