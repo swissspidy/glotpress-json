@@ -1,6 +1,6 @@
 # GlotPress `.json` support
 
-[![Code Climate](https://codeclimate.com/github/swissspidy/glotpress-json/badges/gpa.svg)](https://codeclimate.com/github/swissspidy/glotpress-json)
+[![Build Status](https://travis-ci.org/swissspidy/glotpress-json.svg?branch=master)](https://travis-ci.org/swissspidy/glotpress-json) [![Code Climate](https://codeclimate.com/github/swissspidy/glotpress-json/badges/gpa.svg)](https://codeclimate.com/github/swissspidy/glotpress-json)
 
 A plugin for the [GlotPress WordPress plugin](https://github.com/GlotPress/GlotPress-WP) that adds support for exporting `.json` files, ideally in a [Jed](https://github.com/SlexAxton/Jed)-compatible format.
 
