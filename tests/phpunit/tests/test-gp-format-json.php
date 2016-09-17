@@ -46,4 +46,49 @@ class Test_GP_Format_JSON extends GP_UnitTestCase {
 
 		$this->assertNotNull( json_decode( $json, true ) );
 	}
+
+	public function test_read_originals_from_file_non_existent_file(  ) {
+		$this->assertFalse( GP::$formats['json']->read_originals_from_file( __DIR__ .'/../data/foo.json' ) );
+	}
+
+	public function test_read_originals_from_file_invalid_file(  ) {
+		$this->assertFalse( GP::$formats['json']->read_originals_from_file( __DIR__ .'/../data/example-invalid.json' ) );
+	}
+
+	public function test_read_originals_from_file(  ) {
+		$expected = $this->data_example_untranslated();
+
+		/* @var Translations $actual */
+		$actual = GP::$formats['json']->read_originals_from_file( __DIR__ .'/../data/example-untranslated.json' );
+
+		$this->assertSame( 5, count( $actual->entries ) );
+		$this->assertEquals( $expected, $actual );
+	}
+
+	/**
+	 * Returns the expected data for the parsed example-untranslated.json file.
+	 */
+	public function data_example_untranslated(  ) {
+		$translations = new Translations();
+		$translations->add_entry( new Translation_Entry( array(
+			'singular' => 'This file is too big. Files must be less than %d KB in size.',
+		) ) );
+		$translations->add_entry( new Translation_Entry( array(
+			'singular' => '%d Theme Update',
+		) ) );
+		$translations->add_entry( new Translation_Entry( array(
+			'singular' => 'Medium',
+			'context'  => 'password strength',
+		) ) );
+		$translations->add_entry( new Translation_Entry( array(
+			'singular' => 'Category',
+			'context'  => 'taxonomy singular name',
+		) ) );
+		$translations->add_entry( new Translation_Entry( array(
+			'singular' => 'Pages',
+			'context'  => 'post type general name',
+		) ) );
+
+		return $translations;
+	}
 }

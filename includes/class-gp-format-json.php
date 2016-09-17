@@ -93,6 +93,10 @@ class GP_Format_JSON extends GP_Format {
 	 * @return Translations|bool
 	 */
 	public function read_originals_from_file( $file_name ) {
+		if ( ! file_exists( $file_name ) ) {
+			return false;
+		}
+
 		$file = file_get_contents( $file_name );
 
 		if ( ! $file ) {
