@@ -93,17 +93,7 @@ class GP_Format_JSON extends GP_Format {
 	 * @return Translations|bool
 	 */
 	public function read_originals_from_file( $file_name ) {
-		if ( ! file_exists( $file_name ) ) {
-			return false;
-		}
-
-		$file = file_get_contents( $file_name );
-
-		if ( ! $file ) {
-			return false;
-		}
-
-		$json = $this->json_decode( $file );
+		$json = $this->json_decode( $file_name );
 
 		if ( ! $json ) {
 			return false;
@@ -126,7 +116,13 @@ class GP_Format_JSON extends GP_Format {
 				$args['singular'] = $key[1];
 			}
 
-			if ( 2 === count( $value ) ) {
+			$value = (array) $value;
+
+			if ( isset( $value[0] ) ) {
+				$args['translations'] = $value[0];
+			}
+
+			if ( isset( $value[1] ) ) {
 				$args['plural'] = $value[1];
 			}
 
@@ -146,41 +142,26 @@ class GP_Format_JSON extends GP_Format {
 	 * @return Translations
 	 */
 	public function read_translations_from_file( $file_name, $project = null ) {
-		$entries = new Translations();
-
-		$file = file_get_contents( $file_name );
-
-		if ( ! $file ) {
-			return $entries;
+		if ( is_null( $project ) ) {
+			return false;
 		}
 
-		$json = $this->json_decode( $file );
+		$translations = $this->read_originals_from_file( $file_name );
 
-		if ( ! $json ) {
-			return $entries;
+		if ( ! $translations ) {
+			return false;
 		}
 
-		foreach ( $json['locale_data'][ $json['domain'] ] as $key => $value ) {
-			if ( '' === $key ) {
-				continue;
-			}
+		$originals = GP::$original->by_project_id( $project->id );
+		$new_translations = new Translations;
 
-			$args = array(
-				'singular' => $key,
-			);
+		foreach( $translations->entries as $key => $entry ) {
+			// Todo: Do we need to loop throgh originals here?
 
-			if ( false !== strpos( $key, chr( 4 ) ) ) {
-				$key              = explode( chr( 4 ), $key );
-				$args['context']  = $key[0];
-				$args['singular'] = $key[1];
-			}
-
-			$args['translations'] = $value;
-
-			$entries->add_entry( new Translation_Entry( $args ) );
+			$new_translations->add_entry( $entry );
 		}
 
-		return $entries;
+		return $new_translations;
 	}
 
 	/**
@@ -188,11 +169,21 @@ class GP_Format_JSON extends GP_Format {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param string $json The JSON string being decoded.
+	 * @param string $file_name The name of the JSON file to parse.
 	 * @return array|false The encoded value or fals on failure.
 	 */
-	protected function json_decode( $json ) {
-		$json = json_decode( $json, true );
+	protected function json_decode( $file_name ) {
+		if ( ! file_exists( $file_name ) ) {
+			return false;
+		}
+
+		$file = file_get_contents( $file_name );
+
+		if ( ! $file ) {
+			return false;
+		}
+
+		$json = json_decode( $file, true );
 
 		if ( null === $json ) {
 			return false;
