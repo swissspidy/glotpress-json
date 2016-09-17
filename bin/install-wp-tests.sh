@@ -70,10 +70,10 @@ install_test_suite() {
 
 	if [ ! -f wp-tests-config.php ]; then
 		cp wp-tests-config-sample.php wp-tests-config.php
-		sed $ioption "s/youremptytestdbnamehere/$DB_NAME/" wp-tests-config.php
-		sed $ioption "s/yourusernamehere/$DB_USER/" wp-tests-config.php
-		sed $ioption "s/yourpasswordhere/$DB_PASS/" wp-tests-config.php
-		sed $ioption "s|localhost|${DB_HOST}|" wp-tests-config.php
+		sed -i "s/youremptytestdbnamehere/$DB_NAME/" wp-tests-config.php
+		sed -i "s/yourusernamehere/$DB_USER/" wp-tests-config.php
+		sed -i "s/yourpasswordhere/$DB_PASS/" wp-tests-config.php
+		sed -i "s|localhost|${DB_HOST}|" wp-tests-config.php
 	fi
 
 	cd - > /dev/null
