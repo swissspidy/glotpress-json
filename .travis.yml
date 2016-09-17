@@ -36,7 +36,6 @@ before_script:
   - composer install --no-interaction
 
 script:
-  - source $DEV_LIB_PATH/travis.script.sh
   - if [[ "$WP_TRAVISCI" == "phpvalidate" ]] ; then vendor/bin/phpmd includes text codesize,naming,unusedcode; fi
   - if [[ "$WP_TRAVISCI" == "phpvalidate" ]] ; then vendor/bin/phpcpd -n includes; fi
   - if [[ "$WP_TRAVISCI" == "phpvalidate" ]] ; then vendor/bin/phpcs -n --report=emacs --standard=phpcs.ruleset.xml includes; fi
