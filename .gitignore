@@ -3,4 +3,4 @@ composer.lock
 vendor/
 
 # PHPUnit
-build/
+coverage.xml
