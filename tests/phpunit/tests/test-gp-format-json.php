@@ -55,6 +55,15 @@ class Test_GP_Format_JSON extends GP_UnitTestCase {
 		$this->assertFalse( GP::$formats['json']->read_originals_from_file( __DIR__ .'/../data/example-invalid.json' ) );
 	}
 
+	public function test_read_originals_from_file_missing_domain(  ) {
+		$this->assertFalse( GP::$formats['json']->read_originals_from_file( __DIR__ .'/../data/example-missing-domain.json' ) );
+	}
+
+
+	public function test_read_originals_from_file_missing_locale_data(  ) {
+		$this->assertFalse( GP::$formats['json']->read_originals_from_file( __DIR__ .'/../data/example-missing-locale-data.json' ) );
+	}
+
 	public function test_read_originals_from_file(  ) {
 		$expected = $this->data_example_untranslated();
 
