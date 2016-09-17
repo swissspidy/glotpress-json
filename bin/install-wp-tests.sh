@@ -11,8 +11,10 @@ DB_PASS=$3
 DB_HOST=${4-localhost}
 WP_VERSION=${5-latest}
 
-export WP_TESTS_DIR=${WP_TESTS_DIR-/tmp/wordpress-tests-lib}
 WP_CORE_DIR=${WP_CORE_DIR-/tmp/wordpress/}
+WP_TESTS_DIR=${WP_CORE_DIR}/tests/phpunit
+export WP_CORE_DIR
+export WP_TESTS_DIR
 
 download() {
     if [ `which curl` ]; then
@@ -64,7 +66,7 @@ install_gp() {
 }
 
 install_test_suite() {
-	cd $WP_TESTS_DIR
+	cd $WP_CORE_DIR
 
 	if [ ! -f wp-tests-config.php ]; then
 		cp wp-tests-config-sample.php wp-tests-config.php
