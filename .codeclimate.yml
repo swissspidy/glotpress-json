@@ -24,6 +24,8 @@ engines:
         enabled: false
       CleanCode/ElseExpression:
         enabled: false
+      UnusedFormalParameter:
+        enabled: false
 ratings:
   paths:
   - "**.php"
