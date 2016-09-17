@@ -39,7 +39,7 @@ script:
   - if [[ "$WP_TRAVISCI" == "phpvalidate" ]] ; then vendor/bin/phpmd includes text codesize,naming,unusedcode; fi
   - if [[ "$WP_TRAVISCI" == "phpvalidate" ]] ; then vendor/bin/phpcpd -n includes; fi
   - if [[ "$WP_TRAVISCI" == "phpvalidate" ]] ; then vendor/bin/phpcs -n --report=emacs --standard=phpcs.ruleset.xml includes; fi
-  - if [[ "$WP_TRAVISCI" == "codecoverage" ]] ; then phpunit --coverage-clover build/logs/clover.xml; else phpunit; fi
+  - if [[ "$WP_TRAVISCI" == "codecoverage" ]] ; then phpunit --coverage-clover coverage.xml; else phpunit; fi
 
 after_script:
   - if [[ "$WP_TRAVISCI" == "codecoverage" ]] ; then bash <(curl -s https://codecov.io/bash); fi
