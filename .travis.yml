@@ -31,10 +31,6 @@ matrix:
 before_install:
   # Set up WordPress
   - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-  # Set up GlotPress
-  - echo "Loading GlotPress..."
-  - svn export -q https://github.com/glotpress/glotpress-wp/trunk "$WP_CORE_DIR/src/wp-content/plugins/glotpress"
-  - export GP_TESTS_DIR="$WP_CORE_DIR/src/wp-content/plugins/glotpress/tests/phpunit"
 
 before_script:
   - composer install --no-interaction

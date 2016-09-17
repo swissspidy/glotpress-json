@@ -13,7 +13,6 @@ WP_VERSION=${5-latest}
 
 WP_TESTS_DIR=${WP_TESTS_DIR-/tmp/wordpress-tests-lib}
 WP_CORE_DIR=${WP_CORE_DIR-/tmp/wordpress/}
-export WP_CORE_DIR
 
 download() {
     if [ `which curl` ]; then
@@ -67,6 +66,13 @@ install_wp() {
 	download https://raw.github.com/markoheijnen/wp-mysqli/master/db.php $WP_CORE_DIR/wp-content/db.php
 }
 
+install_gp() {
+	# Set up GlotPress
+	echo "Loading GlotPress..."
+	svn export -q https://github.com/glotpress/glotpress-wp/trunk "$WP_CORE_DIR/src/wp-content/plugins/glotpress"
+	export GP_TESTS_DIR="$WP_CORE_DIR/src/wp-content/plugins/glotpress/tests/phpunit"
+}
+
 install_test_suite() {
 	# set up testing suite if it doesn't yet exist
 	if [ ! -d $WP_TESTS_DIR ]; then
@@ -110,5 +116,6 @@ install_db() {
 }
 
 install_wp
+install_gp
 install_test_suite
 install_db
