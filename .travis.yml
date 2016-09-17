@@ -21,6 +21,8 @@ matrix:
   - php: 5.6
     env: WP_VERSION=latest
   - php: 7.0
+    env: WP_VERSION=trunk WP_TRAVISCI=phpvalidate
+ - php: 7.0
     env: WP_VERSION=trunk WP_TRAVISCI=codecoverage
   - php: hhvm
     env: WP_VERSION=trunk
@@ -36,7 +38,7 @@ before_script:
   - composer install --no-interaction
 
 script:
-  - if [[ "$WP_TRAVISCI" == "phpvalidate" ]] ; then vendor/bin/phpmd includes text codesize,naming,unusedcode; fi
+  - if [[ "$WP_TRAVISCI" == "phpvalidate" ]] ; then vendor/bin/phpmd includes text codesize,naming; fi
   - if [[ "$WP_TRAVISCI" == "phpvalidate" ]] ; then vendor/bin/phpcpd -n includes; fi
   - if [[ "$WP_TRAVISCI" == "phpvalidate" ]] ; then vendor/bin/phpcs -n --report=emacs --standard=phpcs.ruleset.xml includes; fi
   - if [[ "$WP_TRAVISCI" == "codecoverage" ]] ; then phpunit --coverage-clover coverage.xml; else phpunit; fi
