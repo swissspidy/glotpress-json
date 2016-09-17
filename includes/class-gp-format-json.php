@@ -117,8 +117,9 @@ class GP_Format_JSON extends GP_Format {
 			);
 
 			if ( false !== strpos( $key, chr( 4 ) ) ) {
-				$args['context']  = explode( chr( 4 ), $key )[0];
-				$args['singular'] = explode( chr( 4 ), $key )[1];
+				$key              = explode( chr( 4 ), $key );
+				$args['context']  = $key[0];
+				$args['singular'] = $key[1];
 			}
 
 			if ( 2 === count( $value ) ) {
