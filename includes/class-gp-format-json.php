@@ -152,12 +152,11 @@ class GP_Format_JSON extends GP_Format {
 			return false;
 		}
 
-		$originals = GP::$original->by_project_id( $project->id );
+		$originals        = GP::$original->by_project_id( $project->id );
 		$new_translations = new Translations;
 
-		foreach( $translations->entries as $key => $entry ) {
+		foreach ( $translations->entries as $key => $entry ) {
 			// Todo: Do we need to loop throgh originals here?
-
 			$new_translations->add_entry( $entry );
 		}
 
