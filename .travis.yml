@@ -3,7 +3,6 @@ sudo: false
 language:
   - php
 
-## Cache composer bits
 cache:
   directories:
     - vendor
@@ -12,25 +11,52 @@ cache:
 matrix:
   include:
   - php: 5.3
-    env: WP_VERSION=trunk WP_MULTISITE=0
+    env: WP_VERSION=trunk
   - php: 5.4
-    env: WP_VERSION=trunk WP_MULTISITE=0
+    env: WP_VERSION=trunk
   - php: 5.5
-    env: WP_VERSION=trunk WP_MULTISITE=0
+    env: WP_VERSION=trunk
   - php: 5.6
-    env: WP_VERSION=trunk WP_MULTISITE=0
+    env: WP_VERSION=trunk
+  - php: 5.6
+    env: WP_VERSION=latest
   - php: 7.0
-    env: WP_VERSION=trunk WP_MULTISITE=0 WP_TRAVISCI=codecoverage
+    env: WP_VERSION=trunk WP_TRAVISCI=codecoverage
+  - php: hhvm
+    env: WP_VERSION=trunk
+  allow_failures:
+  - php: hhvm
+  fast_finish: true
 
-install:
-  - export DEV_LIB_PATH=dev-lib
-  - if [ ! -e "$DEV_LIB_PATH" ] && [ -L .travis.yml ]; then export DEV_LIB_PATH=$( dirname $( readlink .travis.yml ) ); fi
-  - if [ ! -e "$DEV_LIB_PATH" ]; then git clone https://github.com/xwp/wp-dev-lib.git $DEV_LIB_PATH; fi
-  - source $DEV_LIB_PATH/travis.install.sh
+before_install:
+  # Set up WordPress
+  - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+  # Set up GlotPress
+  - echo "Loading GlotPress..."
+  - svn export -q https://github.com/glotpress/glotpress-wp/trunk "$WP_CORE_DIR/src/wp-content/plugins/glotpress"
+  - export GP_TESTS_DIR="$WP_CORE_DIR/src/wp-content/plugins/glotpress/tests/phpunit"
+
+before_script:
+  - composer install --no-interaction
 
 script:
   - source $DEV_LIB_PATH/travis.script.sh
+  - if [[ "$WP_TRAVISCI" == "phpvalidate" ]] ; then vendor/bin/phpmd includes text codesize,naming,unusedcode; fi
+  - if [[ "$WP_TRAVISCI" == "phpvalidate" ]] ; then vendor/bin/phpcpd -n includes; fi
+  - if [[ "$WP_TRAVISCI" == "phpvalidate" ]] ; then vendor/bin/phpcs -n --report=emacs --standard=phpcs.ruleset.xml includes; fi
+  - if [[ "$WP_TRAVISCI" == "codecoverage" ]] ; then phpunit --coverage-clover build/logs/clover.xml; else phpunit; fi
 
 after_script:
-  - source $DEV_LIB_PATH/travis.after_script.sh
   - if [[ "$WP_TRAVISCI" == "codecoverage" ]] ; then bash <(curl -s https://codecov.io/bash); fi
+
+git:
+  depth: 1
+
+branches:
+  only:
+    - master
+
+notifications:
+  email:
+    on_success: never
+    on_failure: change

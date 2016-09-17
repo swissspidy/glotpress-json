@@ -3,6 +3,8 @@
  * GP Format JSON class
  *
  * @since 0.1.0
+ *
+ * @package GlotPress_JSON
  */
 
 /**

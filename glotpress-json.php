@@ -11,7 +11,7 @@ License: GPLv2 or later
 */
 
 function gp_json_format_init() {
-	require_once( dirname( __FILE__ ) . '/class-gp-format-json.php' );
+	require_once( __DIR__ . '/includes/class-gp-format-json.php' );
 
 	GP::$formats['json'] = new GP_Format_JSON();
 }
