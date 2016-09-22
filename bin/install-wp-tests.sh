@@ -11,7 +11,7 @@ DB_PASS=$3
 DB_HOST=${4-localhost}
 WP_VERSION=${5-latest}
 
-WP_CORE_DIR=${WP_CORE_DIR-/tmp/wordpress/}
+WP_CORE_DIR=${WP_CORE_DIR-/tmp/wordpress}
 WP_TESTS_DIR=${WP_CORE_DIR}/tests/phpunit
 export WP_CORE_DIR
 export WP_TESTS_DIR
@@ -54,14 +54,9 @@ install_wp() {
 }
 
 install_gp() {
-	if [ "$( type -t svn )" == '' ]; then
-		echo "install_wp failure: svn is not installed"
-		return 1
-	fi
-
 	# Set up GlotPress
 	echo "Loading GlotPress..."
-	svn export -q https://github.com/glotpress/glotpress-wp/trunk "$WP_CORE_DIR/src/wp-content/plugins/glotpress"
+	git clone -q git://github.com/glotpress/glotpress-wp "$WP_CORE_DIR/src/wp-content/plugins/glotpress"
 	export GP_TESTS_DIR="$WP_CORE_DIR/src/wp-content/plugins/glotpress/tests/phpunit"
 }
 
