@@ -25,9 +25,6 @@ class Test_GP_Format_JSON extends GP_UnitTestCase {
 		$this->assertSame( 10, has_action( 'gp_init', 'gp_json_format_init' ) );
 	}
 
-	/**
-	 * @covers ::gp_json_format_init
-	 */
 	public function test_json_format_is_available() {
 		$this->assertTrue( isset( GP::$formats['json'] ) );
 	}
