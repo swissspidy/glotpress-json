@@ -138,29 +138,11 @@ class GP_Format_JSON extends GP_Format {
 	 * @since 0.1.0
 	 *
 	 * @param string     $file_name The name of the uploaded properties file.
-	 * @param GP_Project $project   The project object to read the translations into.
+	 * @param GP_Project $project   Unused. The project object to read the translations into.
 	 * @return Translations
 	 */
 	public function read_translations_from_file( $file_name, $project = null ) {
-		if ( is_null( $project ) ) {
-			return false;
-		}
-
-		$translations = $this->read_originals_from_file( $file_name );
-
-		if ( ! $translations ) {
-			return false;
-		}
-
-		$originals        = GP::$original->by_project_id( $project->id );
-		$new_translations = new Translations;
-
-		foreach ( $translations->entries as $key => $entry ) {
-			// Todo: Do we need to loop throgh originals here?
-			$new_translations->add_entry( $entry );
-		}
-
-		return $new_translations;
+		return $this->read_originals_from_file( $file_name );
 	}
 
 	/**

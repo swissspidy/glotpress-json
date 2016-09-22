@@ -59,7 +59,6 @@ class Test_GP_Format_JSON extends GP_UnitTestCase {
 		$this->assertFalse( GP::$formats['json']->read_originals_from_file( __DIR__ . '/../data/example-missing-domain.json' ) );
 	}
 
-
 	public function test_read_originals_from_file_missing_locale_data() {
 		$this->assertFalse( GP::$formats['json']->read_originals_from_file( __DIR__ . '/../data/example-missing-locale-data.json' ) );
 	}
@@ -85,26 +84,15 @@ class Test_GP_Format_JSON extends GP_UnitTestCase {
 		$this->assertFalse( GP::$formats['json']->read_translations_from_file( __DIR__ . '/../data/example-missing-domain.json' ) );
 	}
 
-
 	public function test_read_translations_from_file_missing_locale_data() {
 		$this->assertFalse( GP::$formats['json']->read_translations_from_file( __DIR__ . '/../data/example-missing-locale-data.json' ) );
 	}
 
-	public function test_read_translations_from_file_missing_project() {
-		$this->assertFalse( GP::$formats['json']->read_translations_from_file( __DIR__ . '/../data/example.json' ) );
-	}
-
 	public function test_read_translations_from_file() {
-		GP::$original = $this->getMockBuilder( 'GP_Original' )->setMethods( array( 'by_project_id' ) )->getMock();
-		GP::$original->expects( $this->once() )
-		             ->method( 'by_project_id' )
-		             ->with( $this->equalTo( 1 ) )
-		             ->will( $this->returnValue( $this->data_get_stubbed_originals() ) );
-
 		$expected = $this->data_example_translations();
 
 		/* @var Translations $actual */
-		$actual = GP::$formats['json']->read_translations_from_file( __DIR__ . '/../data/example.json', (object) array( 'id' => 1 ) );
+		$actual = GP::$formats['json']->read_translations_from_file( __DIR__ . '/../data/example.json' );
 
 		$this->assertSame( 5, count( $actual->entries ) );
 		$this->assertEquals( $expected, $actual );
@@ -135,20 +123,6 @@ class Test_GP_Format_JSON extends GP_UnitTestCase {
 		) ) );
 
 		return $translations;
-	}
-
-	public function data_get_stubbed_originals() {
-		$stubbed_originals = array();
-
-		/* @var Translation_Entry $translation_entry */
-		foreach ( $this->data_example_originals()->entries as $translation_entry ) {
-			$stubbed_originals[] = new GP_Original( array(
-				'singular' => $translation_entry->singular,
-				'context'  => $translation_entry->context,
-			) );
-		}
-
-		return $stubbed_originals;
 	}
 
 	/**
