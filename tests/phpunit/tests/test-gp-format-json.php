@@ -17,7 +17,9 @@ class Test_GP_Format_JSON extends GP_UnitTestCase {
 		$this->translation_set = $this->factory->translation_set->create_with_project_and_locale( array(), array( 'name' => 'foo_project' ) );
 
 		$this->locale = new GP_Locale( array(
-			'slug' => $this->translation_set->locale,
+			'slug'              => $this->translation_set->locale,
+			'nplurals'          => 2,
+			'plural_expression' => 'n != 1',
 		) );
 	}
 
@@ -49,6 +51,30 @@ class Test_GP_Format_JSON extends GP_UnitTestCase {
 		$json = GP::$formats['json']->print_exported_file( $this->translation_set->project, $this->locale, $this->translation_set, $entries );
 
 		$this->assertNotNull( json_decode( $json, true ) );
+	}
+
+	public function test_print_exported_file_has_valid_format() {
+		$entries = array(
+			new Translation_Entry( array( 'singular' => 'foo', 'translations' => array( 'bar' ) ) ),
+		);
+
+		$json = GP::$formats['json']->print_exported_file( $this->translation_set->project, $this->locale, $this->translation_set, $entries );
+
+		$actual = json_decode( $json, true );
+
+		$this->assertEquals( array(
+			'domain'      => 'messages',
+			'locale_data' => array(
+				'messages' => array(
+					''    => array(
+						'domain'       => 'messages',
+						'plural-forms' => 'nplurals=2; plural=n != 1;',
+						'lang'         => $this->translation_set->locale,
+					),
+					'foo' => array( 'bar' ),
+				),
+			),
+		), $actual );
 	}
 
 	public function test_read_originals_from_file_non_existent_file() {

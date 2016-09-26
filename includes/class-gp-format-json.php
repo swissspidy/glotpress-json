@@ -53,7 +53,7 @@ class GP_Format_JSON extends GP_Format {
 				'messages' => array(
 					'__GP_EMPTY__' => array(
 						'domain'       => 'messages',
-						'plural-forms' => $locale->plural_expression,
+						'plural-forms' => sprintf( 'nplurals=%1$s; plural=%2$s;', $locale->nplurals, $locale->plural_expression ),
 						'lang'         => $locale->slug,
 					),
 				),
