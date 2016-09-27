@@ -1,5 +1,4 @@
 <?php
-
 /**
  * GP Format Jed 1.x class
  *
