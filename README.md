@@ -8,6 +8,8 @@ See GlotPress issue [#523](https://github.com/GlotPress/GlotPress-WP/issues/523)
 
 ## Screenshots
 
-![JSON Export screenshot](assets/screenshot-1.png??raw=true "Export translations to JSON")
+![JSON Export screenshot](assets/screenshot-1.png?raw=true "Export translations to JSON")
+Export translations to JSON.
 
 ![JSON Import screenshot](assets/screenshot-2.png?raw=true "Import translations from JSON files")
+Import translations from JSON files.
