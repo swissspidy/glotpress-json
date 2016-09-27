@@ -1,6 +1,6 @@
 <?php
 
-class Test_GP_Format_JSON extends GP_UnitTestCase {
+class Test_GP_Format_Jed1x extends GP_UnitTestCase {
 	/**
 	 * @var GP_Translation_Set
 	 */
@@ -14,7 +14,7 @@ class Test_GP_Format_JSON extends GP_UnitTestCase {
 	/**
 	 * @var string
 	 */
-	protected $format = 'json';
+	protected $format = 'jed1x';
 
 	public function setUp() {
 		parent::setUp();
@@ -29,7 +29,7 @@ class Test_GP_Format_JSON extends GP_UnitTestCase {
 	}
 
 	public function test_format_name() {
-		$this->assertSame( 'JSON (.json)', GP::$formats[ $this->format ]->name );
+		$this->assertSame( 'Jed 1.x (.json)', GP::$formats[ $this->format ]->name );
 	}
 
 	public function test_format_extension() {
@@ -49,7 +49,6 @@ class Test_GP_Format_JSON extends GP_UnitTestCase {
 	public function test_print_exported_file_has_valid_format() {
 		$entries = array(
 			new Translation_Entry( array( 'singular' => 'foo', 'translations' => array( 'bar' ) ) ),
-			new Translation_Entry( array( 'singular' => 'bar', 'translations' => array( 'baz' ) ) ),
 		);
 
 		$json = GP::$formats[ $this->format ]->print_exported_file( $this->translation_set->project, $this->locale, $this->translation_set, $entries );
@@ -57,41 +56,62 @@ class Test_GP_Format_JSON extends GP_UnitTestCase {
 		$actual = json_decode( $json, true );
 
 		$this->assertEquals( array(
-			'foo' => array( 'bar' ),
-			'bar' => array( 'baz' ),
+			'domain'      => 'messages',
+			'locale_data' => array(
+				'messages' => array(
+					''    => array(
+						'domain'       => 'messages',
+						'plural-forms' => 'nplurals=2; plural=n != 1;',
+						'lang'         => $this->translation_set->locale,
+					),
+					'foo' => array( 'bar' ),
+				),
+			),
 		), $actual );
 	}
 
 	public function test_read_originals_from_file_non_existent_file() {
-		$this->assertFalse( GP::$formats[ $this->format ]->read_originals_from_file( __DIR__ . '/../data/json/foo.json' ) );
+		$this->assertFalse( GP::$formats[ $this->format ]->read_originals_from_file( __DIR__ . '/../data/jed1x/foo.json' ) );
 	}
 
 	public function test_read_originals_from_file_invalid_file() {
-		$this->assertFalse( GP::$formats[ $this->format ]->read_originals_from_file( __DIR__ . '/../data/json/example-invalid.json' ) );
+		$this->assertFalse( GP::$formats[ $this->format ]->read_originals_from_file( __DIR__ . '/../data/jed1x/example-invalid.json' ) );
+	}
+
+	public function test_read_originals_from_file_missing_domain() {
+		$this->assertFalse( GP::$formats[ $this->format ]->read_originals_from_file( __DIR__ . '/../data/jed1x/example-missing-domain.json' ) );
+	}
+
+	public function test_read_originals_from_file_missing_locale_data() {
+		$this->assertFalse( GP::$formats[ $this->format ]->read_originals_from_file( __DIR__ . '/../data/jed1x/example-missing-locale-data.json' ) );
 	}
 
 	public function test_read_originals_from_file() {
 		$expected = $this->data_example_originals();
 
 		/* @var Translations $actual */
-		$actual = GP::$formats[ $this->format ]->read_originals_from_file( __DIR__ . '/../data/json/example-originals.json' );
+		$actual = GP::$formats[ $this->format ]->read_originals_from_file( __DIR__ . '/../data/jed1x/example-originals.json' );
 		$this->assertSame( 5, count( $actual->entries ) );
 		$this->assertEquals( $expected, $actual );
 	}
 
 	public function test_read_translations_from_file_non_existent_file() {
-		$this->assertFalse( GP::$formats[ $this->format ]->read_translations_from_file( __DIR__ . '/../data/json/foo.json' ) );
+		$this->assertFalse( GP::$formats[ $this->format ]->read_translations_from_file( __DIR__ . '/../data/jed1x/foo.json' ) );
 	}
 
-	public function test_read_translations_from_file_invalid_file() {
-		$this->assertFalse( GP::$formats[ $this->format ]->read_translations_from_file( __DIR__ . '/../data/json/example-invalid.json' ) );
+	public function test_read_translations_from_file_missing_domain() {
+		$this->assertFalse( GP::$formats[ $this->format ]->read_translations_from_file( __DIR__ . '/../data/jed1x/example-missing-domain.json' ) );
+	}
+
+	public function test_read_translations_from_file_missing_locale_data() {
+		$this->assertFalse( GP::$formats[ $this->format ]->read_translations_from_file( __DIR__ . '/../data/jed1x/example-missing-locale-data.json' ) );
 	}
 
 	public function test_read_translations_from_file() {
 		$expected = $this->data_example_translations();
 
 		/* @var Translations $actual */
-		$actual = GP::$formats[ $this->format ]->read_translations_from_file( __DIR__ . '/../data/json/example.json' );
+		$actual = GP::$formats[ $this->format ]->read_translations_from_file( __DIR__ . '/../data/jed1x/example.json' );
 
 		$this->assertSame( 5, count( $actual->entries ) );
 		$this->assertEquals( $expected, $actual );

@@ -21,8 +21,10 @@ License: GPLv2 or later
  */
 function gp_json_format_init() {
 	require_once( __DIR__ . '/includes/class-gp-format-json.php' );
+	require_once( __DIR__ . '/includes/class-gp-format-jed1x.php' );
 
 	GP::$formats['json'] = new GP_Format_JSON();
+	GP::$formats['jed1x'] = new GP_Format_Jed1x();
 }
 
 add_action( 'gp_init', 'gp_json_format_init' );
