@@ -62,6 +62,20 @@ class Test_GP_Format_JSON extends GP_UnitTestCase {
 		), $actual );
 	}
 
+	public function test_print_exported_file_pretty_print() {
+		$entries = array(
+			new Translation_Entry( array( 'singular' => 'foo', 'translations' => array( 'bar' ) ) ),
+			new Translation_Entry( array( 'singular' => 'bar', 'translations' => array( 'baz' ) ) ),
+		);
+
+		add_filter( 'gp_json_export_pretty_print', '__return_true' );
+		$actual = GP::$formats[ $this->format ]->print_exported_file( $this->translation_set->project, $this->locale, $this->translation_set, $entries );
+		remove_filter( 'gp_json_export_pretty_print', '__return_true' );
+
+		// The pretty-printed output has 8 lines in total.
+		$this->assertSame( 7, substr_count( $actual, "\n" ) );
+	}
+
 	public function test_read_originals_from_file_non_existent_file() {
 		$this->assertFalse( GP::$formats[ $this->format ]->read_originals_from_file( __DIR__ . '/../data/json/foo.json' ) );
 	}
