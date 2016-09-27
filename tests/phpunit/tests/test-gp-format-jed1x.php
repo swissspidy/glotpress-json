@@ -70,19 +70,6 @@ class Test_GP_Format_Jed1x extends GP_UnitTestCase {
 		), $actual );
 	}
 
-	public function test_print_exported_file_pretty_print() {
-		$entries = array(
-			new Translation_Entry( array( 'singular' => 'foo', 'translations' => array( 'bar' ) ) ),
-		);
-
-		add_filter( 'gp_json_export_pretty_print', '__return_true' );
-		$actual = GP::$formats[ $this->format ]->print_exported_file( $this->translation_set->project, $this->locale, $this->translation_set, $entries );
-		remove_filter( 'gp_json_export_pretty_print', '__return_true' );
-
-		// The pretty-printed output has 15 lines in total.
-		$this->assertSame( 14, substr_count( $actual, "\n" ) );
-	}
-
 	public function test_read_originals_from_file_non_existent_file() {
 		$this->assertFalse( GP::$formats[ $this->format ]->read_originals_from_file( __DIR__ . '/../data/jed1x/foo.json' ) );
 	}
