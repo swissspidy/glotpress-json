@@ -58,7 +58,16 @@ class GP_Format_JSON extends GP_Format {
 			} );
 		}
 
-		return wp_json_encode( $result );
+		/**
+		 * Filter whether the exported JSON should be pretty printed.
+		 *
+		 * @since 0.1.0
+		 *
+		 * @param bool $pretty_print Whether pretty print should be enabled or not. Default false.
+		 */
+		$pretty_print = apply_filters( 'gp_json_export_pretty_print', false );
+
+		return wp_json_encode( $result, ( true === $pretty_print ) ? JSON_PRETTY_PRINT : 0 );
 	}
 
 	/**

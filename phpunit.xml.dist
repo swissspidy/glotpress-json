@@ -8,7 +8,9 @@
 >
 	<testsuites>
 		<testsuite name="glotpress-json">
-			<directory prefix="test-" suffix=".php">./tests/</directory>
+			<directory prefix="test-" suffix=".php">tests/phpunit/tests</directory>
+			<exclude>tests/phpunit/tests/test-pretty-print.php</exclude>
+			<file phpVersion="5.4.0">tests/phpunit/tests/test-pretty-print.php</file>
 		</testsuite>
 	</testsuites>
 
@@ -16,8 +18,8 @@
 		<whitelist processUncoveredFilesFromWhitelist="false">
 			<directory suffix=".php">./</directory>
 			<exclude>
-				<directory suffix=".php">./tests</directory>
-				<directory suffix=".php">./vendor</directory>
+				<directory suffix=".php">tests</directory>
+				<directory suffix=".php">vendor</directory>
 			</exclude>
 		</whitelist>
 	</filter>
