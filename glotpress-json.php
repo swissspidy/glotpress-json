@@ -20,6 +20,11 @@ License: GPLv2 or later
  * @codeCoverageIgnore
  */
 function gp_json_format_init() {
+	if ( class_exists( 'GP_Format_JSON' ) ) {
+		// Probably running GlotPress 2.3.0.
+		return;
+	}
+	
 	require_once( __DIR__ . '/includes/class-gp-format-json.php' );
 	require_once( __DIR__ . '/includes/class-gp-format-jed1x.php' );
 
